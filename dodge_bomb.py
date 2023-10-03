@@ -37,7 +37,14 @@ def main():
     
     vx, vy = +5, +5  # 練習２：爆弾の速度
     delta = {pg.K_UP:(0, -5), pg.K_DOWN:(0, +5), pg.K_LEFT:(-5, 0), pg.K_RIGHT:(+5, 0)}
-
+    
+    kk_imgs = [pg.transform.rotozoom(kk_img, angle, 1) for angle in range(0, -360, -45)]
+    ttl_mv = {(0, 0):kk_imgs[0], (-5, 0):kk_imgs[0], 
+              (-5, -5):kk_imgs[1], (0, -5):pg.transform.flip(kk_imgs[2], True, False),
+              (+5, -5):pg.transform.flip(kk_imgs[1], True, False), (+5, 0):pg.transform.flip(kk_imgs[4], False, True), 
+              (+5, +5):pg.transform.flip(kk_imgs[7], True, False),
+              (0, +5):kk_imgs[6], (-5, +5):kk_imgs[7]}
+    
     clock = pg.time.Clock()
     tmr = 0
     
@@ -59,7 +66,8 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-        screen.blit(kk_img, kk_rct)  # 練習３：こうかとん動かす
+
+        screen.blit(ttl_mv[tuple(sum_mv)], kk_rct)   # 練習３：こうかとん動かす
         
         bd_rct.move_ip(vx, vy)  # 練習２：爆弾を移動させる
         yoko, tate = check_bound(bd_rct)
