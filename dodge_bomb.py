@@ -2,6 +2,22 @@ import random
 import sys
 import pygame as pg
 WIDTH, HEIGHT = 1600, 900
+
+def check_bound(obj_rct: pg.Rect):  # 練習３：画面内監禁関数
+    """
+    画面外だと縦：:side、横:verがFalseへ変換
+
+    """
+    side = True
+    ver = True
+    if obj_rct.left < 0 or obj_rct.right > WIDTH:
+        side = False
+    if obj_rct.top < 0 or obj_rct.bottom < HEIGHT:
+        ver = False
+    return side, ver
+        
+    
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
