@@ -46,24 +46,32 @@ def main():
               (+5, +5):pg.transform.flip(kk_imgs[7], True, False),
               (0, +5):kk_imgs[6], (-5, +5):kk_imgs[7]}  # 演習１
     
+    accs = [a for a in range(1, 11)]
+    
+    bb_imgs = []
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_imgs.append(bb_img)
+        
+    
     clock = pg.time.Clock()
     tmr = 0
     
     while True:
         for event in pg.event.get():
-            
             if event.type == pg.QUIT:
                 return
+            
         screen.blit(bg_img, [0, 0])
         if kk_rct.colliderect(bd_rct):  # 練習５：こうかとん爆散時
-            kk_imgs = pg.image.load("ex02/fig/8.png")
+            kk_imgs = pg.image.load("ex02/fig/8.png")  # 演習３画像切り替え
             kk_imgs = pg.transform.rotozoom(kk_imgs, 0, 2.0)
             screen.blit(kk_imgs, kk_rct)
             pg.display.update()
             time.sleep(2)
             print("Game Over")
             return
-
 
  
         sum_mv = [0, 0]
@@ -76,15 +84,19 @@ def main():
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
-        screen.blit(ttl_mv[tuple(sum_mv)], kk_rct)   # 練習３：こうかとん動かす
+        screen.blit(ttl_mv[tuple(sum_mv)], kk_rct)   # 練習３：こうかとん動かす  演習１
         
-        bd_rct.move_ip(vx, vy)  # 練習２：爆弾を移動させる
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+        bd_rct.move_ip(avx, avy)  # 練習２：爆弾を移動させる
         yoko, tate = check_bound(bd_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1  # 練習４
         screen.blit(bd_img, bd_rct)  # 練習１：Rectを使って試しにblit
+        
+        tmr += 1
+        
         pg.display.update()
         tmr += 1
         clock.tick(50)
