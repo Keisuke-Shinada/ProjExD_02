@@ -1,5 +1,6 @@
 import random
 import sys
+import time
 import pygame as pg
 WIDTH, HEIGHT = 1600, 900
 
@@ -43,20 +44,28 @@ def main():
               (-5, -5):kk_imgs[1], (0, -5):pg.transform.flip(kk_imgs[2], True, False),
               (+5, -5):pg.transform.flip(kk_imgs[1], True, False), (+5, 0):pg.transform.flip(kk_imgs[4], False, True), 
               (+5, +5):pg.transform.flip(kk_imgs[7], True, False),
-              (0, +5):kk_imgs[6], (-5, +5):kk_imgs[7]}
+              (0, +5):kk_imgs[6], (-5, +5):kk_imgs[7]}  # 演習１
     
     clock = pg.time.Clock()
     tmr = 0
     
     while True:
         for event in pg.event.get():
-            if event.type == pg.QUIT: 
+            
+            if event.type == pg.QUIT:
                 return
+        screen.blit(bg_img, [0, 0])
         if kk_rct.colliderect(bd_rct):  # 練習５：こうかとん爆散時
+            kk_imgs = pg.image.load("ex02/fig/8.png")
+            kk_imgs = pg.transform.rotozoom(kk_imgs, 0, 2.0)
+            screen.blit(kk_imgs, kk_rct)
+            pg.display.update()
+            time.sleep(2)
             print("Game Over")
             return
 
-        screen.blit(bg_img, [0, 0])
+
+ 
         sum_mv = [0, 0]
         key_lst = pg.key.get_pressed()
         for key , mv in delta.items():
@@ -79,6 +88,7 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
+
 
 
 if __name__ == "__main__":
