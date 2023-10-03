@@ -45,7 +45,9 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-        
+        if kk_rct.colliderect(bd_rct):  # 練習５：こうかとん爆散時
+            print("Game Over")
+            return
 
         screen.blit(bg_img, [0, 0])
         sum_mv = [0, 0]
@@ -64,7 +66,7 @@ def main():
         if not yoko:
             vx *= -1
         if not tate:
-            vy *= -1
+            vy *= -1  # 練習４
         screen.blit(bd_img, bd_rct)  # 練習１：Rectを使って試しにblit
         pg.display.update()
         tmr += 1
