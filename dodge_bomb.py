@@ -23,6 +23,7 @@ def check_bound(obj_rct: pg.Rect):  # 練習３：画面内監禁関数
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
+    # Issue#1修正
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
@@ -46,7 +47,7 @@ def main():
               (+5, +5):pg.transform.flip(kk_imgs[7], True, False),
               (0, +5):kk_imgs[6], (-5, +5):kk_imgs[7]}  # 演習１
     
-    accs = [a for a in range(1, 11)]
+    accs = [a for a in range(1, 11)]  # 加速の値
     
     bb_imgs = []
     for r in range(1, 11):
@@ -62,7 +63,7 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
-            
+
         screen.blit(bg_img, [0, 0])
         if kk_rct.colliderect(bd_rct):  # 練習５：こうかとん爆散時
             kk_imgs = pg.image.load("ex02/fig/8.png")  # 演習３画像切り替え
@@ -86,7 +87,7 @@ def main():
 
         screen.blit(ttl_mv[tuple(sum_mv)], kk_rct)   # 練習３：こうかとん動かす  演習１
         
-        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]
+        avx, avy = vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)]  # 演習２　加速
         bd_rct.move_ip(avx, avy)  # 練習２：爆弾を移動させる
         yoko, tate = check_bound(bd_rct)
         if not yoko:
