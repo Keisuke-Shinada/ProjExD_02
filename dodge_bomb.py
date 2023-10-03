@@ -5,14 +5,15 @@ WIDTH, HEIGHT = 1600, 900
 
 def check_bound(obj_rct: pg.Rect):  # 練習３：画面内監禁関数
     """
-    画面外だと縦：:side、横:verがFalseへ変換
-
+    引数：こうかとんRect、爆弾Rect
+    変数：side = 縦, ver = 横
+    画面外だとside、verがFalseへ変換
     """
     side = True
     ver = True
     if obj_rct.left < 0 or obj_rct.right > WIDTH:
         side = False
-    if obj_rct.top < 0 or obj_rct.bottom < HEIGHT:
+    if obj_rct.top < 0 or obj_rct.bottom > HEIGHT:
         ver = False
     return side, ver
         
@@ -54,9 +55,16 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv[0], sum_mv[1])
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)  # 練習３：こうかとん動かす
         
         bd_rct.move_ip(vx, vy)  # 練習２：爆弾を移動させる
+        yoko, tate = check_bound(bd_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bd_img, bd_rct)  # 練習１：Rectを使って試しにblit
         pg.display.update()
         tmr += 1
